@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "redux-batched-actions": "^0.5.0",
-    "robodux": "^12.1.0"
+    "robodux": "^13.0.0"
   },
   "peerDependencies": {
     "react": ">=16.0.0",

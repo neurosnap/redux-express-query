@@ -2304,13 +2304,12 @@ rimraf@^3.0.0:
   dependencies:
     glob "^7.1.3"
 
-robodux@^12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/robodux/-/robodux-12.1.0.tgz#962fdfacdbb0fab71e6a8406e109727597f43c49"
-  integrity sha512-3v2w85/b0SOmBIrEEb8UwguSWhlbl+AhjBrfxdR6lqbHDMPPe1ljgYeiad4wbM4thLxFCf+LTK+PSzRw7tbXSg==
+robodux@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/robodux/-/robodux-13.0.0.tgz#1a87f3c06b6b8609ab498c55326bee0f9ece0206"
+  integrity sha512-EFc0G1dY8aSniIXptbKo2yecArpWzB1a036pOhktc107hezSe1Q0RdXT+SEip3oFWn/YTUjGTcV/pyVrvT/kZA==
   dependencies:
     immer "^9.0.7"
-    redux-batched-actions "^0.5.0"
 
 rxjs@^7.5.1:
   version "7.5.2"
