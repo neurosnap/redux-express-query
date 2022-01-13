@@ -1,9 +1,9 @@
-import type { LoadingItemState } from "robodux";
-import { createReducerMap, createTable, createLoaderTable } from "robodux";
+import type { LoadingItemState } from 'robodux';
+import { createReducerMap, createTable, createLoaderTable } from 'robodux';
 
 export interface QueryState {
-  "@@robodux/loaders": { [key: string]: LoadingItemState };
-  "@@robodux/data": { [key: string]: any };
+  '@@robodux/loaders': { [key: string]: LoadingItemState };
+  '@@robodux/data': { [key: string]: any };
 }
 
 export const LOADERS_NAME = `@@robodux/loaders`;

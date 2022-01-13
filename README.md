@@ -2,11 +2,10 @@
 
 Control your data cache on the front-end.
 
-Data fetching and caching using a robust middleware system.
-Quickly build data loading within your redux application and reduce boilerplate.
+Data fetching and caching using a robust middleware system. Quickly build data
+loading within your redux application and reduce boilerplate.
 
-**This API is undergoing active development. Consider this in a beta
-state.**
+**This API is undergoing active development. Consider this in a beta state.**
 
 - [Control your data cache](#control-your-data-cache)
 - [Manipulating the request](#manipulating-the-request)
@@ -25,8 +24,8 @@ state.**
 
 - Write middleware to handle fetching, synchronizing, and caching API requests
   on the front-end
-- A familiar middleware system that node.js developers are familiar with
-  (e.g. express)
+- A familiar middleware system that node.js developers are familiar with (e.g.
+  express)
 - Simple recipes to handle complex use-cases like cancellation, polling,
   optimistic updates, loading states, undo, react
 - Full control over the data fetching and caching layers in your application
@@ -34,16 +33,16 @@ state.**
 
 ```ts
 // api.ts
-import { createApi, requestMonitor, requestParser } from 'robodux';
+import { createApi, requestMonitor, requestParser } from 'redux-express-query';
 
 const api = createApi();
 api.use(requestMonitor());
 // where all the routes get placed in the middleware stack
-api.use(api.actions()); 
+api.use(api.actions());
 api.use(requestParser());
 
 api.use(async (ctx, next) => {
-  const { url = "", ...options } = ctx.request;
+  const { url = '', ...options } = ctx.request;
   const resp = await fetch(`https://api.github.com${url}`, options);
   const data = await resp.json();
   ctx.response = { status: resp.status, ok: resp.ok, data };
@@ -51,8 +50,8 @@ api.use(async (ctx, next) => {
 });
 
 export const fetchRepo = api.get(
-  `/repos/neurosnap/robodux`,
-  api.request({ simpleCache: true })
+  `/repos/neurosnap/redux-express-query`,
+  api.request({ simpleCache: true }),
 );
 ```
 
@@ -60,7 +59,7 @@ export const fetchRepo = api.get(
 // app.tsx
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useSimpleCache } from 'robodux';
+import { useSimpleCache } from 'redux-express-query';
 import { fetchUsers } from './api';
 
 const App = () => {
@@ -70,44 +69,46 @@ const App = () => {
     cache.trigger();
   }, []);
 
-  if (cache.isInitialLoading) return <div>Loading ...</div>
-  if (cache.isError) return <div>{cache.message}</div>
+  if (cache.isInitialLoading) return <div>Loading ...</div>;
+  if (cache.isError) return <div>{cache.message}</div>;
 
   return (
     <div>
-      {cache.data.map((user) => <div key={user.id}>{user.email}</div>)}
+      {cache.data.map((user) => (
+        <div key={user.id}>{user.email}</div>
+      ))}
     </div>
   );
-}
+};
 ```
 
 ## Why?
 
 Libraries like [react-query](https://react-query.tanstack.com/),
 [rtk-query](https://rtk-query-docs.netlify.app/), and
-[apollo-client](https://www.apollographql.com/docs/react/) are making it
-easier than ever to fetch and cache data from an API server.  All of them
-have their unique attributes and I encourage everyone to check them out.
+[apollo-client](https://www.apollographql.com/docs/react/) are making it easier
+than ever to fetch and cache data from an API server. All of them have their
+unique attributes and I encourage everyone to check them out.
 
 We wanted to take some of the great things from those libraries but provide a
-little more control for the end-developer.  We also wanted to leverage a
-powerful middleware paradigm that has been used for years in the expressjs world.
+little more control for the end-developer. We also wanted to leverage a powerful
+middleware paradigm that has been used for years in the expressjs world.
 
-Why learn how to cache API data when a library can do it for you?  Here are
-some reasons:
+Why learn how to cache API data when a library can do it for you? Here are some
+reasons:
 
-- What happens when [`useMemo` isn't good
-  enough](https://medium.com/swlh/should-you-use-usememo-in-react-a-benchmarked-analysis-159faf6609b7)?
+- What happens when
+  [`useMemo` isn't good enough](https://medium.com/swlh/should-you-use-usememo-in-react-a-benchmarked-analysis-159faf6609b7)?
 - What happens when the data syncing library lacks the caching granularity you
   need?
 - What happens when the data syncing library doesn't cache things in an
   optimized way for your needs?
 - What happens when you want to reuse your business logic for another platform
-(e.g. a cli) and can't use `react`?
+  (e.g. a cli) and can't use `react`?
 
-This library is intended for large scale, complex flow control applications
-that need full control over the data cache layer while setting good standards
-for using redux and a flexible middleware to handle all business logic.
+This library is intended for large scale, complex flow control applications that
+need full control over the data cache layer while setting good standards for
+using redux and a flexible middleware to handle all business logic.
 
 ## Core principles
 
@@ -120,16 +121,16 @@ for using redux and a flexible middleware to handle all business logic.
 
 ## How does it work?
 
-`createApi` will build a set of actions and async functions for each `action` or http
-method used (e.g. `get`, `post`, `put`).  Let's call them endpoints.  Each
+`createApi` will build a set of actions and async functions for each `action` or
+http method used (e.g. `get`, `post`, `put`). Let's call them endpoints. Each
 endpoint gets their own action and linked function.
 
 The middleware that is loaded into the query via `.use(...)` gets added to an
-array.  This array becomes a pipeline that each endpoint calls in order.  When
-`await next()` is called inside the middleware or an endpoint, it calls the
-next middleware in the stack until it finishes.  Everything after `await
-next()` gets called after all the middleware ahead of the current middleware
-finishes its execution.
+array. This array becomes a pipeline that each endpoint calls in order. When
+`await next()` is called inside the middleware or an endpoint, it calls the next
+middleware in the stack until it finishes. Everything after `await next()` gets
+called after all the middleware ahead of the current middleware finishes its
+execution.
 
 Here's a test that demonstrates the order of execution:
 
@@ -181,8 +182,8 @@ import {
   requestParser,
   // FetchCtx is an interface that's built around using window.fetch
   // You don't have to use it if you don't want to.
-  FetchCtx
-} from 'robodux';
+  FetchCtx,
+} from 'redux-express-query';
 
 // create a reducer that acts like a SQL database table
 // the keys are the id and the value is the record
@@ -276,9 +277,9 @@ const fetchUsers = api.get(
 // the reducers which will then have `combineReducers` applied to it.
 const reducers = createReducerMap(users);
 // This is a helper function that does a bunch of stuff to prepare redux for
-// robodux.  In particular, it will:
+// redux-express-query.  In particular, it will:
 //   - Setup redux-batched-actions
-//   - Setup a couple of reducers that robodux will use: loaders and data
+//   - Setup a couple of reducers that we will use: loaders and data
 const prepared = prepareStore({
   reducers,
 });
@@ -296,7 +297,7 @@ store.dispatch(fetchUsers());
 ### Manipulating the request
 
 ```ts
-const createUser = api.post<{ id: string, email: string }>(
+const createUser = api.post<{ id: string; email: string }>(
   `/users`,
   async (ctx: FetchCtx<User>, next) => {
     // here we manipulate the request before it gets sent to our middleware
@@ -313,13 +314,13 @@ const createUser = api.post<{ id: string, email: string }>(
   },
 );
 
-store.dispatch(createUser({ id: '1', }));
+store.dispatch(createUser({ id: '1' }));
 ```
 
 Have some `request` data that you want to set when creating the endpoint?
 
 ```ts
-const fetchUsers = api.get('/users', api.request({ credentials: 'include' }))
+const fetchUsers = api.get('/users', api.request({ credentials: 'include' }));
 ```
 
 `api.request()` accepts the request for the `Ctx` that the end-developer
@@ -328,16 +329,16 @@ provides.
 ### Simple cache
 
 If you want to have a cache that doesn't enforce strict types and is more of a
-dumb cache that fetches and stores data for you, then `simpleCache` will
-provide that functionality for you.
+dumb cache that fetches and stores data for you, then `simpleCache` will provide
+that functionality for you.
 
 The following code will mimic what a library like `react-query` is doing
-behind-the-scenes.  I want to make it clear that `react-query` is doing a lot
-more than this so I don't want to understate what it does.  However, you can
-see that not only can we get a core chunk of the functionality `react-query`
-provides with a little over 100 lines of code but we also have full control
-over fetching, querying, and caching data with the ability to customize it
-using middleware.
+behind-the-scenes. I want to make it clear that `react-query` is doing a lot
+more than this so I don't want to understate what it does. However, you can see
+that not only can we get a core chunk of the functionality `react-query`
+provides with a little over 100 lines of code but we also have full control over
+fetching, querying, and caching data with the ability to customize it using
+middleware.
 
 ```ts
 // api.ts
@@ -347,7 +348,7 @@ import {
   requestParser,
   timer,
   prepareStore,
-} from 'robodux';
+} from 'redux-express-query';
 
 const api = createApi();
 api.use(requestMonitor());
@@ -375,7 +376,7 @@ const store = createStore(
 ```tsx
 // app.tsx
 import React from 'react';
-import { useQuery } from 'robodux';
+import { useQuery } from 'redux-express-query/react';
 
 import { fetchUsers } from './api';
 
@@ -386,10 +387,10 @@ interface User {
 
 const useUsers = () => {
   const { data: users = [], ...loader } = useQuery<{ users: User[] }>(
-    fetchUsers()
+    fetchUsers(),
   );
   return { users, ...loader };
-}
+};
 
 export const App = () => {
   const { users, isInitialLoading, isError, message } = useUsers();
@@ -399,26 +400,28 @@ export const App = () => {
 
   return (
     <div>
-      {users.map((user) => <div key={user.id}>{user.name}</div>)}
+      {users.map((user) => (
+        <div key={user.id}>{user.name}</div>
+      ))}
     </div>
   );
-}
+};
 ```
 
 ### Dispatching many actions
 
-Sometimes we need to dispatch a bunch of actions for an endpoint.  From loading
-states to making multiple requests in a single side-effect, there can be a lot of
-actions being dispatched.  When using `prepareStore` we automatically setup
-`redux-batched-actions` so you don't have to.  Anything that gets added to
+Sometimes we need to dispatch a bunch of actions for an endpoint. From loading
+states to making multiple requests in a single side-effect, there can be a lot
+of actions being dispatched. When using `prepareStore` we automatically setup
+`redux-batched-actions` so you don't have to. Anything that gets added to
 `ctx.actions` will be automatically dispatched by the `dispatchActions`
 middleware.
 
 ### Dependent queries
 
-Sometimes it's necessary to compose multiple endpoints together.  For example
-we might want to fetch a mailbox and its associated messages.  Similar to
-`redux-thunk` you can await the dispatch. 
+Sometimes it's necessary to compose multiple endpoints together. For example we
+might want to fetch a mailbox and its associated messages. Similar to
+`redux-thunk` you can await the dispatch.
 
 ```ts
 const fetchMailbox = api.get('/mailboxes');
@@ -435,7 +438,7 @@ const fetchMessages = api.get<{ id: string }>(
     }
 
     ctx.request = {
-      url: `/mailboxes/${mailCtx.response.id}/messages`
+      url: `/mailboxes/${mailCtx.response.id}/messages`,
     };
 
     await next();
@@ -495,20 +498,17 @@ store.dispatch(action());
 
 When using `prepareStore` in conjunction with `dispatchActions`,
 `loadingMonitor`, and `requestParser` the loading state will automatically be
-added to all of your endpoints.  We also export `QueryState` which is the
-interface that contains all the state types that `robodux` provides.
+added to all of your endpoints. We also export `QueryState` which is the
+interface that contains all the state types that `redux-express-query` provides.
 
 ```tsx
 // app.tsx
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectLoaderById } from 'robodux';
-import type { MapEntity, QueryState } from 'robodux';
+import { selectLoaderById, MapEntity } from 'robodux';
+import type { QueryState } from 'redux-express-query';
 
-import {
-  fetchUsers,
-  selectUsersAsList,
-} from './api';
+import { fetchUsers, selectUsersAsList } from './api';
 
 interface AppState extends QueryState {
   users: MapEntity<User>;
@@ -517,40 +517,44 @@ interface AppState extends QueryState {
 const App = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsersAsList);
-  const loader = useSelector(
-    (s: AppState) => selectLoaderById(s, { id: `${fetchUsers}` })
+  const loader = useSelector((s: AppState) =>
+    selectLoaderById(s, { id: `${fetchUsers}` }),
   );
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
 
   if (loader.isInitialLoading) {
-    return <div>Loading ...</div>
+    return <div>Loading ...</div>;
   }
 
   if (loader.isError) {
-    return <div>Error: {loader.message}</div>
+    return <div>Error: {loader.message}</div>;
   }
 
   return (
-    <div>{users.map((user) => <div key={user.id}>{user.email}</div>)}</div>
+    <div>
+      {users.map((user) => (
+        <div key={user.id}>{user.email}</div>
+      ))}
+    </div>
   );
-}
+};
 ```
 
 ### React
 
 We built a couple of simple hooks `useQuery` and `useSimpleCache` to make
-interacting with `robodux` easier.  Having said that, it would be trivial to
+interacting with `redux-express-query` easier. Having said that, it would be trivial to
 build your own custom hooks to do exactly what you want.
 
-Let's rewrite the react code used in the previous example ([loading
-state](#loading-state))
+Let's rewrite the react code used in the previous example
+([loading state](#loading-state))
 
 ```ts
 // use-query.ts
 import { useEffect } from 'react';
-import { useQuery } from 'robodux/react';
+import { useQuery } from 'redux-express-query/react';
 
 import { fetchUsers, selectUsersAsList } from './api';
 
@@ -560,7 +564,7 @@ export const useQueryUsers = () => {
     cache.trigger();
   }, []);
   return cache;
-}
+};
 ```
 
 ```tsx
@@ -572,69 +576,49 @@ const App = () => {
   const { data, isInitialLoading, isError, message } = useQueryUsers();
 
   if (isInitialLoading) {
-    return <div>Loading ...</div>
+    return <div>Loading ...</div>;
   }
 
   if (isError) {
-    return <div>Error: {message}</div>
+    return <div>Error: {message}</div>;
   }
 
   return (
-    <div>{data.map((user) => <div key={user.id}>{user.email}</div>)}</div>
+    <div>
+      {data.map((user) => (
+        <div key={user.id}>{user.email}</div>
+      ))}
+    </div>
   );
-}
+};
 ```
 
 ### Cache timer
 
-Only call the endpoint at most once per interval.  We can dispatch the action
-as many times as we want but it will only get activated once every N
-milliseconds.  This effectively updates the cache on an interval.
+Only call the endpoint at most once per interval. We can dispatch the action as
+many times as we want but it will only get activated once every N milliseconds.
+This effectively updates the cache on an interval.
 
 ```ts
-import { timer } from 'robodux';
+import { timer } from 'redux-express-query';
 
 const SECONDS = 1000;
 const MINUTES = 60 * SECONDS;
 
-const fetchUsers = api.get(
-  '/users',
-  [
-    timer(10 * MINUTES), 
-    async (ctx, next) => {
-      // ...
-      await next(); 
-    },
-  ]
-);
-```
-
-### Take leading
-
-If two requests are made:
-- (A) request; then
-- (B) request
-
-While (A) request is still in flight, (B) request would be canceled.
-
-```ts
-import { takeLeading } from 'robodux';
-
-const usersApi = api.create('/users');
-const fetchUsers = usersApi.get([
-  takeLeading,
+const fetchUsers = api.get('/users', [
+  timer(10 * MINUTES),
   async (ctx, next) => {
-    await next();
     // ...
-  }
+    await next();
+  },
 ]);
 ```
 
 ### Optimistic UI
 
 ```tsx
-import type { MapEntity, PatchEntity, OptimisticCtx } from 'robodux';
-import { optimistic } from 'robodux';
+import type { MapEntity, PatchEntity } from 'robodux';
+import { optimistic, OptimisticCtx } from 'redux-express-query';
 
 const api = createApi();
 api.use(api.actions());
@@ -657,7 +641,7 @@ const updateUser = api.patch(
     };
 
     await next();
-  }
+  },
 );
 ```
 
@@ -673,7 +657,7 @@ The middleware accepts three properties:
 
 - `doItType` (default: `${doIt}`) => action type
 - `undoType` (default: `${undo}`) => action type
-- `timeout` (default: 30 * 1000) => time in milliseconds before the endpoint
+- `timeout` (default: 30 \* 1000) => time in milliseconds before the endpoint
   get canceled automatically
 
 ```ts
@@ -685,8 +669,8 @@ import {
   undo,
   doIt,
   UndoCtx,
-  createAction
-} from 'robodux';
+} from 'redux-express-query';
+import { createAction } from 'robodux';
 
 interface Message {
   id: string;
@@ -700,7 +684,7 @@ api.use(api.actions());
 api.use(requestParser());
 api.use(undoer());
 
-const archiveMessage = api.patch<{ id: string; }>(
+const archiveMessage = api.patch<{ id: string }>(
   `message/:id`,
   async (ctx, next) => {
     ctx.undoable = true;
@@ -712,8 +696,8 @@ const archiveMessage = api.patch<{ id: string; }>(
 
     // make the API request
     await next();
-  }
-)
+  },
+);
 
 const reducers = createReducerMap(messages);
 const store = setupStore(reducers);
