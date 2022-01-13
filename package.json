@@ -1,0 +1,9 @@
+{
+  "name": "redux-express-query",
+  "version": "0.0.1",
+  "description": "express-like middleware for your redux side-effects",
+  "main": "index.js",
+  "author": "Eric Bower",
+  "license": "MIT",
+  "private": false
+}
