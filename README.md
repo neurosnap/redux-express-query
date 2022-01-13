@@ -1,4 +1,4 @@
-# createApi
+# redux-express-query
 
 Control your data cache on the front-end.
 
