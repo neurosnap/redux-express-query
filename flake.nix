@@ -1,5 +1,5 @@
 {
-  description = "development environment for robodux";
+  description = "development environment for redux-express-query";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
