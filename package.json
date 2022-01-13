@@ -58,13 +58,11 @@
     "typescript": "^4.5.4"
   },
   "lint-staged": {
-    "*.{js}": [
+    "*.ts": [
       "prettier --write",
-      "git add"
     ],
-    "*.{md}": [
+    "*.md": [
       "prettier --config prettier.md.js --write",
-      "git add"
     ]
   }
 }
