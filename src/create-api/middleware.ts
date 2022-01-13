@@ -1,7 +1,6 @@
 import { batchActions } from 'redux-batched-actions';
-
-import createAction from '../create-action';
-import type { Action, ActionWithPayload } from '../types';
+import { createAction } from 'robodux';
+import type { Action, ActionWithPayload } from 'robodux';
 
 import type { ApiCtx, Ctx, Next } from './types';
 import { compose } from './compose';
@@ -74,7 +73,7 @@ export async function queryCtx(ctx: ApiCtx, next: Next) {
 export async function errorHandler(ctx: Ctx, next: Next) {
   try {
     await next();
-  } catch (err) {
+  } catch (err: any) {
     console.error(
       `Error: ${err.message}.  Check the endpoint [${ctx.name}]`,
       ctx,

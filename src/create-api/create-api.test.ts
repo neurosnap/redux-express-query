@@ -1,6 +1,5 @@
-import { createReducerMap } from '../combine';
-import type { MapEntity } from '../types';
-import createTable from '../create-table';
+import { createReducerMap, createTable, defaultLoadingItem } from 'robodux';
+import type { MapEntity } from 'robodux';
 
 import { createApi, createPipe } from '.';
 import { setupStore } from './store';
@@ -14,7 +13,6 @@ import {
 import type { UndoCtx } from './middleware';
 import type { Ctx, FetchCtx } from './types';
 import { createQueryState, DATA_NAME, LOADERS_NAME } from './slice';
-import { defaultLoadingItem } from '../create-loader';
 
 interface User {
   id: string;
@@ -83,7 +81,7 @@ describe('createPipe', () => {
     api.use(async (_, next) => {
       try {
         await next();
-      } catch (err) {
+      } catch (err: any) {
         expect(err.message).toEqual('some error');
         done();
       }
@@ -107,7 +105,7 @@ describe('createPipe', () => {
     const action = api.create(`/error`, async (_, next) => {
       try {
         await next();
-      } catch (err) {
+      } catch (err: any) {
         expect(err.message).toEqual('some error');
         done();
       }

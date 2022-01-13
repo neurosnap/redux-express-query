@@ -1,0 +1,6 @@
+test/
+prettier.config.js
+tsconfig.json
+tsconfig.test.json
+.travis.yml
+yarn.lock

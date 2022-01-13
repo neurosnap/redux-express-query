@@ -1,13 +1,13 @@
-import { Dispatch } from 'redux';
-import type { LoadingMapPayload } from '../create-loader-table';
-import type { Action, ActionWithPayload } from '../types';
-import { CancelablePromise } from './cancelable';
-import type { EventEmitter } from './emitter';
+import { Dispatch } from "redux";
+import type { LoadingMapPayload, Action, ActionWithPayload } from "robodux";
+
+import { CancelablePromise } from "./cancelable";
+import type { EventEmitter } from "./emitter";
 
 export type Next = () => any;
 export type Middleware<CurCtx extends Ctx = Ctx> = (
   ctx: CurCtx,
-  next: Next,
+  next: Next
 ) => any;
 
 export type MiddlewareCo<CurCtx extends Ctx> =
@@ -37,11 +37,11 @@ export interface CreateActionWithPayload<CurCtx, P> {
 }
 
 export type FxStatus =
-  | 'idle'
-  | 'running'
-  | 'cancelled'
-  | 'aborted'
-  | 'completed';
+  | "idle"
+  | "running"
+  | "cancelled"
+  | "aborted"
+  | "completed";
 
 export interface Ctx<S = any, P = any> {
   name: string;
@@ -109,7 +109,7 @@ export interface PipeApi<CurCtx extends Ctx = Ctx> {
   create(name: string, fn?: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   create<P>(
     name: string,
-    fn?: MiddlewareCo<CurCtx>,
+    fn?: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 }
 
@@ -144,60 +144,60 @@ export interface ApiHttpMethods<CurCtx extends ApiCtx = ApiCtx> {
 
 export interface CreateApi<CurCtx extends ApiCtx = ApiCtx>
   extends PipeApi<CurCtx> {
-  request: (r: CurCtx['request']) => Middleware<CurCtx>;
+  request: (r: CurCtx["request"]) => Middleware<CurCtx>;
   uri(name: string): ApiHttpMethods<CurCtx>;
 
   get(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   get<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   post(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   post<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   put(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   put<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   patch(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   patch<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   delete(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   delete<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   options(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   options<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   head(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   head<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   connect(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   connect<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 
   trace(name: string, fn: MiddlewareCo<CurCtx>): CreateAction<CurCtx>;
   trace<P>(
     name: string,
-    fn: MiddlewareCo<CurCtx>,
+    fn: MiddlewareCo<CurCtx>
   ): CreateActionWithPayload<CurCtx, P>;
 }
