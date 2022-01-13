@@ -59,10 +59,10 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write",
+      "prettier --write"
     ],
     "*.md": [
-      "prettier --config prettier.md.js --write",
+      "prettier --config prettier.md.js --write"
     ]
   }
 }
